@@ -19,7 +19,9 @@ ActiveRecord::ShortLease.explicit_connections_only do
   Async { |task| 
     100.times.map {
       task.async {
-        ActiveRecord::ShortLease.safe_checkout { ActiveRecord::Base.connection.execute "SELECT pg_sleep(1);" }
+        ActiveRecord::ShortLease.safe_checkout {
+          ActiveRecord::Base.connection.execute "SELECT pg_sleep(1);"
+        }
       }
     }.map(&:wait)
   }.wait
