@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "fiber"
 require "active_record"
 require "after_commit_everywhere"
 require_relative "short_lease/version"
@@ -43,6 +42,7 @@ module ActiveRecord
       if AfterCommitEverywhere.in_transaction?
         raise "ActiveRecord::Base.explicit_connections_only cannot be used in a transaction"
       end
+
       ActiveRecord::Base.connection_handler.clear_active_connections!
       Fiber[:short_lease_connections] = true
       yield

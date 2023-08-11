@@ -34,7 +34,6 @@ Gem::Specification.new do |spec|
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "activerecord", "~> 7"
   spec.add_dependency "after_commit_everywhere", "~> 1.3"
-  spec.add_development_dependency "sqlite3", "~> 1.3", ">= 1.3.6"
   spec.add_development_dependency "async", ">= 2"
 
   # For more information and examples about making a new gem, check out our
