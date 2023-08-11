@@ -16,14 +16,14 @@ RSpec.describe ActiveRecord::ShortLease do
   end
 
   before do
-    ActiveRecord::Base.logger = Logger.new(STDOUT)
+    ActiveRecord::Base.logger = Logger.new($stdout)
     ActiveRecord::Base.logger.level = Logger::DEBUG
     ActiveRecord::Base.establish_connection(
-      adapter: 'postgresql',
-      host: 'localhost',
-      username: ENV['POSTGRES_USER'],
-      password: ENV['POSTGRES_PASSWORD'],
-      database: ENV['POSTGRES_DB'],
+      adapter: "postgresql",
+      host: "localhost",
+      username: ENV["POSTGRES_USER"],
+      password: ENV["POSTGRES_PASSWORD"],
+      database: ENV["POSTGRES_DB"],
       pool: 5,
       checkout_timeout: 20
     )
@@ -34,7 +34,7 @@ RSpec.describe ActiveRecord::ShortLease do
   end
 
   it "does something useful" do
-    puts "a: #{}"
+    puts "a: "
     ActiveRecord::Base.transaction do
       puts "b: #{in_use_count}"
       puts "c: #{in_use_count}"
@@ -48,7 +48,7 @@ RSpec.describe ActiveRecord::ShortLease do
 
   it "does something else" do
     ActiveRecord::ShortLease.explicit_connections_only do
-      Async { |task| 
+      Async { |task|
         10.times.map {
           task.async {
             ActiveRecord::ShortLease.safe_checkout { ActiveRecord::Base.connection.execute "SELECT pg_sleep(1);" }

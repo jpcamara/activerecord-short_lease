@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
-class ActiveRecord::ConnectionAdapters::ConnectionPool
-  prepend ::ActiveRecord::ShortLease::ConnectionPoolEnforcer
+module ActiveRecord
+  module ConnectionAdapters
+    class ConnectionPool
+      prepend ::ActiveRecord::ShortLease::ConnectionPoolEnforcer
+    end
+  end
 end

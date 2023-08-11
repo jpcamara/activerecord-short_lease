@@ -21,12 +21,12 @@ end
 # }; nil
 
 # ActiveRecord::ShortLease.explicit_connections_only do
-#   Async { |task| 
+#   Async { |task|
 #     10.times.map {
 #       task.async {
 #         ActiveRecord::ShortLease.explicit_connections_only do
-#           ActiveRecord::ShortLease.safe_checkout { 
-#             ActiveRecord::Base.connection.execute "SELECT pg_sleep(1);" 
+#           ActiveRecord::ShortLease.safe_checkout {
+#             ActiveRecord::Base.connection.execute "SELECT pg_sleep(1);"
 #           }
 #         end
 #       }
@@ -37,11 +37,11 @@ end
 module ActiveRecord
   module ShortLease
     class Error < StandardError; end
-    
+
     def self.explicit_connections_only
       was = Fiber[:short_lease_connections]
       if AfterCommitEverywhere.in_transaction?
-        raise 'ActiveRecord::Base.explicit_connections_only cannot be used in a transaction'
+        raise "ActiveRecord::Base.explicit_connections_only cannot be used in a transaction"
       end
       ActiveRecord::Base.connection_handler.clear_active_connections!
       Fiber[:short_lease_connections] = true
