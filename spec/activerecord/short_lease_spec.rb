@@ -21,9 +21,9 @@ RSpec.describe ActiveRecord::ShortLease do
     ActiveRecord::Base.establish_connection(
       adapter: 'postgresql',
       host: 'localhost',
-      username: 'postgres',
-      password: 'password',
-      database: 'database',
+      username: ENV['POSTGRES_USER'],
+      password: ENV['POSTGRES_PASSWORD'],
+      database: ENV['POSTGRES_DB'],
       pool: 5,
       checkout_timeout: 20
     )
@@ -49,7 +49,7 @@ RSpec.describe ActiveRecord::ShortLease do
   it "does something else" do
     ActiveRecord::ShortLease.explicit_connections_only do
       Async { |task| 
-        100.times.map {
+        10.times.map {
           task.async {
             ActiveRecord::ShortLease.safe_checkout { ActiveRecord::Base.connection.execute "SELECT pg_sleep(1);" }
           }

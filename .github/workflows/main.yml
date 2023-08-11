@@ -7,6 +7,11 @@ on:
 
   pull_request:
 
+env:
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: password
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,7 +19,19 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '2.7.6'
+          - '3.2.2'
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: password
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - uses: actions/checkout@v3
